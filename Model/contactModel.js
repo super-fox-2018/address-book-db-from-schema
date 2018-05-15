@@ -1,79 +1,77 @@
 const controller = require ("../Controller/controller.js");
 const group = require("./groupModel.js");
-const db = require("../setup.js")
+const db = require ("../setup.js")
 
 class Contact{
   constructor(contactObj){
     this._name = contactObj.name;
+    this.company = contactObj.company;
+    this.phone = contactObj.phone;
+    this.email = contactObj.email;
     this.name = "";
-    this.id = this.getId();
+    this.id = this.ID();
   }
 
-  save(cb){
+  save(){
     var classThis = this;
-    let insertName = `INSERT INTO contacts (name)
-                      VALUES ('${this._name}');`
+    let insertName = `INSERT INTO contacts (name,company,phone,email)
+                      VALUES ('${this._name}', '${this.company}','${this.phone}','${this.email}');`
 
-    db.all(insertName, function(err, resultContact){
+    db.run(insertName, function(err){
       if(err) throw err;
       else{
-        classThis.getId();
+        classThis.ID();
       }
     })
   }
 
-  getId(cb){
+   getId(cb){
     let getId = `SELECT * FROM contacts
                    WHERE contacts.name = '${this._name}';`
     db.all(getId, function(err, result){
       if (err) throw err;
+        cb(result);
+    })
+  }
+
+  ID(){
+    this.getId(function(result){
       if(result.length !== 0){
-        this.id = result[0].id;
-        console.log(this.id);
-        cb(result[0].id);
+        console.log(result[0].id);
+        return result[0].id;
       }
       else{
-        this.id = null;
-        console.log(this.id);
-        // cb(this.id);
+        console.log(null);
+        return null;
       }
     })
   }
 
 
   update(){
-    this.getId(function(id){
-      var idCompare =  id;
+    let classThis = this;
+    this.getId(function(idResult){
       let updateName = `UPDATE contacts
-                        SET name =  '${this.name}'
-                        WHERE id = ${idCompare};`
-                        console.log(updateName);
+                        SET name =  '${classThis.name}'
+                        WHERE id = ${idResult[0].id};`
+
+      db.run(updateName, function(err,name){
+        if (err) throw err;
+      })
     })
-
-                      // console.log(`${this.name}`);
-
-                                            console.log("----" + this.id);
-
-    // db.run(updateName, function(err,name){
-    //   if (err) throw err;
-    // })
   }
-  //
-  // name(){
-  //   this.update(function(name){
-  //     console.log(name);
-  //   })
-  // }
 
 }
 
-
-let contact = new Contact({name:"gyrados2"});
-contact.id;
-contact.save();
-contact.id;
-contact.name = "Bob";
-contact.update();
-console.log("----", contact.name);
-// contact.name;
-// contact.readId();
+let obj = {
+  name:"gyrados",
+  company:"pokemon",
+  phone:"12344556",
+  email:"gyrados@gmail.com"
+}
+let contact = new Contact(obj);
+// contact.id;
+// contact.save();
+// contact.id;
+// contact.name = "Bob";
+// contact.update();
