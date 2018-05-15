@@ -1,0 +1,22 @@
+{
+  "name": "address-book-db-from-schema",
+  "version": "1.0.0",
+  "description": "address book",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/super-fox-2018/address-book-db-from-schema.git"
+  },
+  "author": "adrowicaksono",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/super-fox-2018/address-book-db-from-schema/issues"
+  },
+  "homepage": "https://github.com/super-fox-2018/address-book-db-from-schema#readme",
+  "dependencies": {
+    "sqlite3": "^4.0.0"
+  }
+}
