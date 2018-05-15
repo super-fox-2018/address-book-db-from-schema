@@ -85,6 +85,33 @@ class Contact {
 		//console.log(groupName)
 	}
 
+	static showAllContacts(cb) {
+		db.all(`SELECT * FROM contacts`,function(err,rows) {
+			cb(rows)
+		})
+	}
+
+	static assignContact(idContact,idGroup,cb) {
+		db.get(`SELECT * FROM contacts WHERE id = ${idContact}`,function(err,row) {
+			if(err) {
+				cb(err,null)
+			}
+			if(row !== undefined) {
+				db.get(`SELECT * FROM contact_groups WHERE contact_id = ${idContact}`,function(err,row) {
+					if(err) {
+						cb(err,null)
+					}
+					if(row!==undefined) {
+						db.run(`INSERT INTO contact_groups VALUES(null,"${idContact}","${idGroup}")`)
+						cb(null,`data berhasil diupdate`)	
+					}
+							
+				})
+			}	
+		})
+		
+	}
+
 
 }
 

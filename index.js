@@ -34,3 +34,16 @@ if(command == "deleteGroup") {
 if(command == "showGroup"){
 	Controller.showGroup(argv[3])
 }
+
+if(command == "assignContact") {
+	Controller.assignContact(argv[3],argv[4])
+}
+
+if(command=="showAllGroups") {
+	Controller.showAllGroups()
+}
+
+if(command=="showAllContacts") {
+	Controller.showAllContacts()
+}
+

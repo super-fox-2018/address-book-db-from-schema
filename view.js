@@ -37,6 +37,19 @@ class View {
 	static showGroup(result) {
 		console.log(result)
 	}
+
+	static showAllGroups(result) {
+		console.log(result)
+	}
+
+
+	static showAllContacts(result) {
+		console.log(result)
+	}
+
+	static assignContact(result) {
+		console.log(result)
+	}
 }
 
 module.exports = View

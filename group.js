@@ -67,6 +67,14 @@ class Group{
 		})
 	}
 
+	static showAllGroups(cb) {
+		db.all(`SELECT * FROM groups`,function(err,rows) {
+			cb(rows)
+		})
+	}
+
+	
+	
 
 
 }

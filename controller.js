@@ -84,6 +84,30 @@ class Controller {
 	 	})
 	 }
 
+	 static assignContact(idContact,idGroup) {
+	 	Contact.assignContact(idContact,idGroup,function(err,result) {
+	 		if(err) {
+	 			View.errorMessage(err)	
+	 		}else{
+	 			View.assignContact(result)
+	 		}
+	 		
+	 	})
+	 }
+
+	 static showAllGroups() {
+	 	Group.showAllGroups(function(result){
+	 		View.showAllGroups(result)
+	 	})
+	 }
+
+	 static showAllContacts() {
+	 	Contact.showAllContacts(function(result){
+	 		View.showAllContacts(result)
+	 	})
+	 }
+
+
 }
 
 
