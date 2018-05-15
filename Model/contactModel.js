@@ -9,7 +9,7 @@ class Contact{
     this.phone = contactObj.phone;
     this.email = contactObj.email;
     this.name = "";
-    this.id = this.ID();
+    this._id = null;
   }
 
   save(){
@@ -19,9 +19,6 @@ class Contact{
 
     db.run(insertName, function(err){
       if(err) throw err;
-      else{
-        classThis.ID();
-      }
     })
   }
 
@@ -34,16 +31,13 @@ class Contact{
     })
   }
 
-  ID(){
+  get id(){
+    var classThis = this;
     this.getId(function(result){
       if(result.length !== 0){
-        console.log(result[0].id);
-        return result[0].id;
+        classThis._id = result[0].id;
       }
-      else{
-        console.log(null);
-        return null;
-      }
+      console.log(classThis._id)
     })
   }
 
@@ -55,11 +49,23 @@ class Contact{
                         SET name =  '${classThis.name}'
                         WHERE id = ${idResult[0].id};`
 
-      db.run(updateName, function(err,name){
+      db.run(updateName, function(err){
         if (err) throw err;
       })
     })
   }
+
+  show(){
+    let showAllQuery = `SELECT contacts.*, groups.name AS groupName FROM contacts
+                        LEFT JOIN contact_group ON contact_group.contact_id = contacts.id
+                        LEFT JOIN groups ON contact_group.group_id = groups.id;`
+
+    db.all(showAllQuery, function(err,data){
+      if(err) throw err;
+      console.log(data);
+    })
+  }
+
 
 }
 
@@ -69,9 +75,11 @@ let obj = {
   phone:"12344556",
   email:"gyrados@gmail.com"
 }
+
 let contact = new Contact(obj);
-// contact.id;
+contact.id;
 // contact.save();
-// contact.id;
+contact.id;
 // contact.name = "Bob";
 // contact.update();
+contact.show();
