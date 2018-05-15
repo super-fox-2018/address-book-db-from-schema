@@ -5,14 +5,19 @@ var db = new sqlite3.Database('./address_book.db');
 class Contact {
 
 	static addContact(name,company,phone,email,cb) {
-		let insertQuery = `INSERT INTO contacts VALUES(null,"${name}","${company}","${phone}","${email}")`
-		db.run(insertQuery,function(err) {
-			if(err) {
-				cb(err,null)
-			}else{
-				cb(null,`data name:"${name}",company:"${company}",phone:"${phone}",email:"${email}" berhasil dimasukkan`)
-			}
-		})
+		if(phone.length<=12 && email.indexOf("@")!==-1 && email.indexOf(".")) {
+			let insertQuery = `INSERT INTO contacts VALUES(null,"${name}","${company}","${phone}","${email}")`
+			db.run(insertQuery,function(err) {
+				if(err) {
+					cb(err,null)
+				}else{
+					cb(null,`data name:"${name}",company:"${company}",phone:"${phone}",email:"${email}" berhasil dimasukkan`)
+				}
+			})
+		}else{
+			cb(null,'email atau nomor tidak valid')
+		}
+		
 	}
 
 
