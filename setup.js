@@ -34,9 +34,9 @@ arrQuery.push(contactsGroup);
 
 for (let i=0; i < arrQuery.length; i++){
     const query = arrQuery[i];
-    db.run(query, (err) =>{x``
+    db.run(query, (err) =>{
         if (err) throw err;
-        console.log(`Succesfully added new table to database`)
+        // console.log(`Succesfully added new table to database`)
     })
 }
 

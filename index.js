@@ -3,32 +3,35 @@ const Controller = require('./controller')
 const param = process.argv[2];
 const arrParam = process.argv.slice(3);
 
-switch (param){
+switch (param) {
+    case 'help':
+        Controller.showHelp()
+        break;
     case 'addContact':
-          if (arrParam){
-              Controller.addContact(arrParam);
-          }
-          break;
+        if (arrParam) {
+            Controller.addContact(arrParam);
+        }
+        break;
     case 'showContact':
-          if (arrParam){
-              Controller.showContact(arrParam)
-          }
-          break;
+        if (arrParam) {
+            Controller.showContact(arrParam)
+        }
+        break;
     case 'updateContact':
-          if (arrParam){
+        if (arrParam) {
             Controller.updateContact(arrParam)
-          }
-          break;
+        }
+        break;
     case 'deleteContact':
-          if (arrParam){
+        if (arrParam) {
             Controller.deleteContact(arrParam)
-          }
-          break;
+        }
+        break;
     case 'assignContact':
-          if (arrParam){
+        if (arrParam) {
             Controller.assignContact(arrParam)
-          }
-          break;
-    default:   
-          
+        }
+        break;
+    default:
+
 }

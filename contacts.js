@@ -54,6 +54,16 @@ class Contact {
             callback(this.changes)
         })
     }
+
+    static listGroup (id, callback){
+        let query = `SELECT * FROM [group] where id in (`
+        query += `SELECT group_id FROM contact_group WHERE contact_id = `;
+        query += `${id});`;
+        db.all(query, [] , (err, groupList) => {
+            if (err) throw err;
+            callback(groupList)
+        })
+    }
     // static addGroup(contactId, groupId){
     //     let query = `INSERT INTO contact_group VALUES (`;
     //     query += `${contactId}, ${groupId});`
@@ -63,11 +73,5 @@ class Contact {
     //     })
     // }
 }
-
-// let contact = new Contact("Alex");
-// contact.company = 'PT ALAM Makmur';
-// contact.phone = '081888888888';
-// contact.email = 'alex@gmail.com';
-// contact.save();
 
 module.exports = Contact;

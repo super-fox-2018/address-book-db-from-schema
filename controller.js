@@ -3,6 +3,9 @@ const View = require('./view');
 const ContactGroup = require('./contact_group');
 
 class Controller {
+    static showHelp(){
+        View.displayHelp()
+    }
     static addContact(arrParam) {
         arrParam = arrParam.join('').split(':');
         let name = (arrParam[0]) ? arrParam[0] : '';
@@ -19,7 +22,9 @@ class Controller {
     static showContact(arrParam) {
         let id = arrParam[0];
         Contact.readContact(id, function (contact) {
-            View.display(contact)
+            Contact.listGroup(id, function (groupList){
+                View.displayContact(contact, groupList)
+            })
         })
     }
     static updateContact(arrParam) {
