@@ -34,6 +34,7 @@ queries.forEach((query, i) => {
     if (err) throw err;
     if (i === queries.length - 1) {
       console.log('Successfully added all tables');
+      db.run('PRAGMA foreign_keys = ON;');
       require('./data/seed-data');
     }
   });

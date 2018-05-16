@@ -30,7 +30,7 @@ class contactController {
     if (prefix === 'id') {
       Contact.delete(deletePrefix)
         .then(deletedGroup => {
-          View.showMessage('Successfully deleted group!');
+          View.showMessage('Successfully deleted contact!');
           View.showContact(deletedGroup);
         })
         .catch(err => View.showError('Contact not found!'));
