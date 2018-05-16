@@ -5,7 +5,6 @@ const View = require('./view');
 
 class Controller {
   static setup() {
-    console.log(Setup);
     Setup.setup();
   }
 
@@ -22,6 +21,36 @@ class Controller {
   static updateContact(id, name, address) {
     let updatedContact = new Contact({id, name, address});
     updatedContact.update();
+  }
+
+  static showContact(id) {
+    let contact = new Contact({id});
+    contact.show();
+  }
+
+  static addGroup(name) {
+    let newGroup = new Group({name});
+    newGroup.save();
+  }
+
+  static deleteGroup(id) {
+    let deletedGroup = new Group({id});
+    deletedGroup.delete();
+  }
+
+  static updateGroup(id, name) {
+    let updatedGroup = new Group({id, name});
+    updatedGroup.update();
+  }
+
+  static showGroup(id) {
+    let group = new Group({id});
+    group.show();
+  }
+
+  static assignContact(contactId, GroupId) {
+    let contact = new Contact({id: contactId});
+    contact.assign(GroupId);
   }
 }
 

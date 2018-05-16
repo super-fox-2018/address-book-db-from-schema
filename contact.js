@@ -30,6 +30,25 @@ class Contact {
     db.run(`UPDATE contacts SET name = '${this.name}' WHERE id = '${this.id}';`);
     db.run(`UPDATE contacts SET address = '${this.address}' WHERE id = '${this.id}';`);
   }
+
+  show() {
+    db.all(`SELECT contacts.*, groups.name AS group_name FROM contacts
+          JOIN contacts_groups ON contacts.id = contacts_groups.contact_id
+          JOIN groups ON contacts_groups.group_id = groups.id
+          WHERE contacts.id = ${this.id};`, (err, contact) => {
+            if (err) throw err;
+            console.log(contact);
+          });
+  }
+
+  assign(groupId) {
+    let contact = this;
+    let query = `INSERT INTO contacts_groups (contact_id, group_id) VALUES (${this.id}, ${groupId});`;
+    db.run(query, function(err) {
+      if (err) throw err;
+      console.log(`Successfully assign contact id: ${contact.id} to group id: ${groupId}`);
+    });
+  }
 }
 
 module.exports = Contact;
