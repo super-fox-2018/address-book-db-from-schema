@@ -1,85 +1,82 @@
 const controller = require ("../Controller/controller.js");
-const group = require("./groupModel.js");
-const db = require ("../setup.js")
+var path = require('path');
+var directories = path.dirname("/Users/rin08.ng/Desktop/Hacktiv8/Phase1/Week3/address-book-db-from-schema/setup.js");
+const db = require (directories)
 
 class Contact{
-  constructor(contactObj){
-    this._name = contactObj.name;
-    this.company = contactObj.company;
-    this.phone = contactObj.phone;
-    this.email = contactObj.email;
-    this.name = "";
-    this._id = null;
+  constructor(){
   }
 
-  save(){
+  static create(contactObj, cb){
     var classThis = this;
     let insertName = `INSERT INTO contacts (name,company,phone,email)
-                      VALUES ('${this._name}', '${this.company}','${this.phone}','${this.email}');`
+                      VALUES ('${contactObj.name}', '${contactObj.company}','${contactObj.phone}','${contactObj.email}');`
 
     db.run(insertName, function(err){
       if(err) throw err;
+      cb(contactObj);
     })
   }
 
-   getId(cb){
-    let getId = `SELECT * FROM contacts
-                   WHERE contacts.name = '${this._name}';`
-    db.all(getId, function(err, result){
+  static update(column, value, id, cb){
+    column = column.toLowerCase();
+    value = value.toLowerCase();
+
+    let updateName = `UPDATE contacts
+                      SET '${column}' =  '${value}'
+                      WHERE id = ${id};`
+
+    db.all(updateName, function(err, updateData){
       if (err) throw err;
-        cb(result);
+      cb(column, value, id, updateData);
     })
   }
 
-  get id(){
-    var classThis = this;
-    this.getId(function(result){
-      if(result.length !== 0){
-        classThis._id = result[0].id;
-      }
-      console.log(classThis._id)
-    })
-  }
-
-
-  update(){
-    let classThis = this;
-    this.getId(function(idResult){
-      let updateName = `UPDATE contacts
-                        SET name =  '${classThis.name}'
-                        WHERE id = ${idResult[0].id};`
-
-      db.run(updateName, function(err){
-        if (err) throw err;
-      })
-    })
-  }
-
-  show(){
+  static show(cb){
     let showAllQuery = `SELECT contacts.*, groups.name AS groupName FROM contacts
                         LEFT JOIN contact_group ON contact_group.contact_id = contacts.id
                         LEFT JOIN groups ON contact_group.group_id = groups.id;`
 
-    db.all(showAllQuery, function(err,data){
+    db.all(showAllQuery, function(err,showData){
       if(err) throw err;
-      console.log(data);
+      cb(showData)
+    })
+  }
+
+  static delete(id, cb){
+    let deleteQuery = `DELETE FROM contacts
+                       WHERE contacts.id = ${id};`
+
+    db.run(deleteQuery, function(err){
+      if(err) throw err
+      let deleteQueryContactGroup = `DELETE FROM contact_group
+                                    WHERE contact_group.contact_id = ${id};`
+
+      db.run(deleteQueryContactGroup, function(err){
+        if(err) throw err;
+        cb(id);
+      })
     })
   }
 
 
 }
 
-let obj = {
-  name:"gyrados",
-  company:"pokemon",
-  phone:"12344556",
-  email:"gyrados@gmail.com"
-}
+// let obj = {
+//   name:"vaporeon",
+//   company:"pokemon",
+//   phone:"1234666",
+//   email:"vaporeon@gmail.com"
+// }
+// Contact.delete(2, function(id){
+//   console.log("Deleted data from contacts at id = " + id);
+// });
+// Contact.create(obj, function(contactObj){
+//   console.log("INSERTED NEW CONTACT: " + contactObj.name);
+// });
+// Contact.update('phone', obj.phone, 1);
+// Contact.show(function(showData){
+//   console.log(showData);
+// });
 
-let contact = new Contact(obj);
-contact.id;
-// contact.save();
-contact.id;
-// contact.name = "Bob";
-// contact.update();
-contact.show();
+module.exports = Contact;
